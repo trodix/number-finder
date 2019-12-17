@@ -5,6 +5,14 @@
     <div class="info" v-if="message">
       {{ message }}
     </div>
+    <div class="score">
+      <table>
+        <tr v-for="s in score" :key="s.token">
+          <td>{{ s.pseudo }}</td>
+          <td>{{ s.cnt }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -18,11 +26,15 @@ export default {
       pseudo_tmp: null,
     }
   },
+  created() {
+    this.$store.dispatch('loadScore');
+  },
   computed: {
     ...mapState({
       pseudo: state => state.pseudo,
       token: state => state.token,
-      message: state => state.message
+      message: state => state.message,
+      score: state => state.score,
     })
   },
   methods: {

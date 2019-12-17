@@ -16,7 +16,8 @@ export default new Vuex.Store({
     counter: 0,
     value: null,
     message: null,
-    success: false
+    success: false,
+    score: null
   },
   mutations: {
     set_token(state, value) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     set_success(state, value) {
       state.success = value;
+    },
+    set_score(state, value) {
+      state.score = value;
     },
     reset_state(state) {
       console.log("play again hit !")
@@ -45,6 +49,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    loadScore({ commit }) {
+      axios.get('/')
+      .then(response => {
+        console.log(response.data);
+        commit('set_score', response.data);
+      })
+    },
     startGame({ commit }, _pseudo) {
       axios.post("/startGame", {
         pseudo: _pseudo
