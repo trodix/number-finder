@@ -1,28 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Start from '../views/Start'
+import Main from '../views/Main'
+import End from '../views/End'
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'start',
-    component: import('../views/Start.vue')
+    component: Start
   },
   {
-    path: '/game/:pseudo/:token',
+    path: '/game',
     name: 'game',
-    component: import('../views/Main.vue')
+    component: Main
   },
   {
-    path: '/end/:pseudo/:token',
+    path: '/end',
     name: 'end',
-    component: () => import('../views/End.vue')
+    component: End
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

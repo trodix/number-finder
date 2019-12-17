@@ -1,8 +1,9 @@
 <template>
   <div class="main">
-    <p>Nombre d'essai:&nbsp;<span id="nb-try">{{ nbTry }}</span></p>
+    <p>Pseudo:&nbsp;<span>{{ pseudo }}</span></p>
+    <p>Nombre d'essai:&nbsp;<span id="counter">{{ counter }}</span></p>
     <div>
-      <input type="number" min=0 max=10000 placeholder="Saisir un nombre" :value="value">
+      <input type="number" min=0 max=10000 placeholder="Saisir un nombre" v-model="value">
       <button @click="proposer">Proposer</button>
     </div>
     <div class="info" v-if="message">
@@ -12,33 +13,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
-      nbTry: 0,
-      message: null,
-      pseudo: '',
-      token: '',
       value: null,
-      url: 'http://numberfinder.noodigital.fr'
     }
   },
   mounted() {
-    this.pseudo = this.$router.currentRoute.params.pseudo;
-    this.token = this.$router.currentRoute.params.token;
+    if(!this.pseudo || !this.token) {
+      this.$router.push('/')
+    }
+  },
+  computed: {
+    ...mapState({
+      pseudo: state => state.pseudo,
+      token: state => state.token,
+      counter: state => state.counter,
+      message: state => state.message,
+    })
   },
   methods: {
     proposer() {
-      axios.post(url, {
-        token: this.token,
-        value: this.value
-      }).then(response => {
-        console.log(response);
-        if(response.data.) {
-          this.$router.push({ name: 'end', pseudo: this.pseudo, token: this.token });
-        }
-        this.nbTry++;
-      }).catch(err => console.log(err.toString()));
+      this.$store.dispatch('proposer', this.value);
     }
   }
 }
